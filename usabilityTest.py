@@ -136,11 +136,49 @@ def section_navigation(index):
 
 
 def main():
+    st.set_page_config(page_title="Setlist Archive Usability Test", layout="wide",
+                       initial_sidebar_state="collapsed")
+    st.html("""
+        <style>
+        .stMainBlockContainer {
+            width: 100%;
+            max-width: none;
+            padding-inline: clamp(1rem, 4vw, 5rem);
+            padding-top: clamp(1.5rem, 3vw, 3rem);
+        }
+        [data-testid="stMarkdownContainer"] p,
+        [data-testid="stMarkdownContainer"] li,
+        [data-testid="stWidgetLabel"] p,
+        [data-testid="stButton"] button,
+        [data-testid="stLinkButton"] a,
+        [data-testid="stFormSubmitButton"] button {
+            font-size: clamp(1.05rem, 1rem + 0.25vw, 1.25rem);
+            line-height: 1.6;
+        }
+        [data-testid="stMarkdownContainer"] h1 {
+            font-size: clamp(1.8rem, 1.2rem + 2.5vw, 3.25rem);
+            overflow-wrap: anywhere;
+        }
+        [data-testid="stMarkdownContainer"] h2 {
+            font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+        }
+        [data-testid="stTabs"] [role="tab"] p {
+            font-size: clamp(1rem, 0.9rem + 0.25vw, 1.2rem);
+        }
+        [data-testid="stButton"] button,
+        [data-testid="stLinkButton"] a,
+        [data-testid="stFormSubmitButton"] button {
+            min-height: 3rem;
+        }
+        @media (max-width: 640px) {
+            .stMainBlockContainer { padding-inline: 1rem; }
+            [data-testid="stTabs"] [role="tablist"] { gap: 0.75rem; }
+        }
+        </style>
+    """)
     initialize_csv_files()
     st.session_state.setdefault("participant_id", "P-" + uuid4().hex[:8])
     st.title("Setlist Archive - Project 2 Usability Test")
-    st.sidebar.write(f"Current participant: **{st.session_state['participant_id']}**")
-    st.sidebar.caption("Start each participant's test on the Consent page. Use the same participant ID for all sections.")
 
     home, consent, demographics, tasks, exit, report = st.tabs(
         SECTIONS, key="active_section", on_change="rerun"
